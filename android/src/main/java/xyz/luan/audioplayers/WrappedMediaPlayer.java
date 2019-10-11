@@ -132,6 +132,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         this.savedAudioMode = audioManager.getMode();
         if (!this.playing) {
 
+            // CHECK VERSIONS
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
                                                           .setUsage(AudioAttributes.USAGE_MEDIA)
