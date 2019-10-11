@@ -415,8 +415,25 @@ float _playbackRate = 1.0;
      isLocal: (int) isLocal
       volume: (float) volume
         time: (CMTime) time
-      isNotification: (bool) respectSilence
-{
+      isNotification: (bool) respectSilence {
+         NSError *error = nil;
+          AVAudioSessionCategory category;
+          if (respectSilence) {
+              category = AVAudioSessionCategoryAmbient;
+
+          } else {
+              category = AVAudioSessionCategoryPlayback;
+          }
+          BOOL success = [[AVAudioSession sharedInstance]
+              setCategory:category
+              withOptions:AVAudioSessionCategoryOptionDuckOthers
+
+                    error:&error];
+          if (!success) {
+              NSLog(@"Error setting speaker: %@", error);
+          }
+          [[AVAudioSession sharedInstance] setActive:YES error:&error];
+
   [ self setUrl:url 
          isLocal:isLocal 
          isNotification:respectSilence
@@ -529,7 +546,11 @@ float _playbackRate = 1.0;
     [ self pause:playerId ];
     [ self seek:playerId time:CMTimeMake(0, 1) ];
     [playerInfo setObject:@false forKey:@"isPlaying"];
-  }
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    }
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
 }
 
 -(void) seek: (NSString *) playerId
