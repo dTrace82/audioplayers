@@ -35,6 +35,10 @@ public class AudioplayersPlugin implements MethodCallHandler {
         this.activity = activity;
     }
 
+    public Activity getActivity() {
+        return this.activity;
+    }
+
     @Override
     public void onMethodCall(final MethodCall call, final MethodChannel.Result response) {
         try {

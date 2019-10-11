@@ -120,9 +120,38 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
      * Playback handling methods
      */
 
+    public void onAudioFocusChange(int focusChange) {
+    }
+
+    private AudioFocusRequest audioFocusRequest;
+    private int savedAudioMode;
+
     @Override
     void play() {
+        AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
+        this.savedAudioMode = audioManager.getMode();
         if (!this.playing) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
+                                                          .setUsage(AudioAttributes.USAGE_MEDIA)
+                                                          .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                                                          .build();
+                this.audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                                             .setAudioAttributes(mPlaybackAttributes)
+                                             .setAcceptsDelayedFocusGain(true)
+                                             .setOnAudioFocusChangeListener(new AudioManager.OnAudioFocusChangeListener() {
+                                                 @Override
+                                                 public void onAudioFocusChange(int i) {
+                                                 }
+                                             })
+                                             .build();
+                int res = audioManager.requestAudioFocus(this.audioFocusRequest);
+            } else {
+                audioManager.requestAudioFocus(null, AudioManager.STREAM_VOICE_CALL,
+                                               AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+            }
+
             this.playing = true;
             if (this.released) {
                 this.released = false;
@@ -138,6 +167,14 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void stop() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
+            audioManager.abandonAudioFocusRequest(this.audioFocusRequest);
+        } else {
+            AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
+            audioManager.setMode(this.savedAudioMode);
+            audioManager.abandonAudioFocusRequest(null);
+        }
         if (this.released) {
             return;
         }
