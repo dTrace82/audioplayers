@@ -5,6 +5,7 @@ import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.bluetooth.BluetoothManager;
 import android.net.rtp.AudioStream;
 import android.os.Build;
 import android.os.Handler;
@@ -130,9 +131,30 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private AudioFocusRequest audioFocusRequest;
     private int savedAudioMode;
 
+
+    private void reset(AudioManager audioManager) {
+        if (audioManager != null) {
+            audioManager.setMode(AudioManager.MODE_NORMAL);
+            audioManager.stopBluetoothSco();
+            audioManager.setBluetoothScoOn(false);
+            audioManager.setSpeakerphoneOn(false);
+            audioManager.setWiredHeadsetOn(false);
+        }
+    }
+
     @Override
     void play() {
         AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
+
+        if (BluetoothManager.isBluetoothHeadsetConnected() == true) {
+            this.reset(audioManager);
+           // audioManager.setSpeakerphoneOn(true)
+        } else {
+            this.reset(audioManager);
+            audioManager.setSpeakerphoneOn(true);
+        }
+
+
         this.savedAudioMode = audioManager.getMode();
         if (!this.playing) {
 
