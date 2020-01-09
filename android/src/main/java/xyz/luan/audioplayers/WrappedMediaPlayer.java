@@ -153,7 +153,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             // CHECK VERSIONS
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
-                                                          .setUsage(AudioAttributes.USAGE_ASSISTANT) //USAGE_MEDIA
+                                                          .setUsage(AudioAttributes.USAGE_MEDIA)
                                                           .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                                                           .build();
                 this.audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
@@ -167,7 +167,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                                              .build();
                 int res = audioManager.requestAudioFocus(this.audioFocusRequest);
             } else {
-                audioManager.requestAudioFocus(null, AudioManager.STREAM_VOICE_CALL,
+                audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC,
                                                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
             }
 
