@@ -145,7 +145,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     void play() {
         AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
 
-        this.reset(audioManager);
+      //  this.reset(audioManager);
 
         this.savedAudioMode = audioManager.getMode();
         if (!this.playing) {
@@ -303,7 +303,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             );
         } else {
             // This method is deprecated but must be used on older devices
-            player.setAudioStreamType(respectSilence ? AudioManager.STREAM_RING : AudioManager.STREAM_MUSIC);
+            player.setAudioStreamType(respectSilence ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_MUSIC);
         }
     }
 
