@@ -167,6 +167,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                                              .build();
                 int res = audioManager.requestAudioFocus(this.audioFocusRequest);
             } else {
+                audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
                 audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC,
                                                AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
             }
