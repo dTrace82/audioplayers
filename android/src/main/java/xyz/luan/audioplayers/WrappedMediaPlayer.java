@@ -291,6 +291,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         } else {
             // This method is deprecated but must be used on older devices
             // player.setAudioStreamType(respectSilence ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_MUSIC);
+            //TEST
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }
