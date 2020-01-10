@@ -153,7 +153,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                                                  }
                                              })
                                              .build();
-                int res = audioManager.requestAudioFocus(this.audioFocusRequest, AudioManager.STREAM_MUSIC,);
+                int res = audioManager.requestAudioFocus(this.audioFocusRequest);
             } else {
                 audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
             }
