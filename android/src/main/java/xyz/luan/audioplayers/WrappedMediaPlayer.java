@@ -142,7 +142,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
                                                           .setUsage(AudioAttributes.USAGE_MEDIA)
-                                                          .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                                                          .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                                                           .build();
                 this.audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
                                              .setAudioAttributes(mPlaybackAttributes)
@@ -284,14 +284,14 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private void setAttributes(MediaPlayer player) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             player.setAudioAttributes(new AudioAttributes.Builder()
-                    .setUsage(respectSilence ? AudioAttributes.USAGE_NOTIFICATION_RINGTONE : AudioAttributes.USAGE_MEDIA)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
             );
         } else {
             // This method is deprecated but must be used on older devices
             // player.setAudioStreamType(respectSilence ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_MUSIC);
-            //TEST
+            //TEST 2
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }
