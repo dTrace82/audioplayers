@@ -131,21 +131,9 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     private int savedAudioMode;
 
 
-    private void reset(AudioManager audioManager) {
-        if (audioManager != null) {
-            audioManager.setMode(AudioManager.MODE_NORMAL);
-            audioManager.stopBluetoothSco();
-            audioManager.setBluetoothScoOn(false);
-            audioManager.setSpeakerphoneOn(false);
-            audioManager.setWiredHeadsetOn(false);
-        }
-    }
-
     @Override
     void play() {
         AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
-
-        this.reset(audioManager);
 
         this.savedAudioMode = audioManager.getMode();
         if (!this.playing) {
@@ -165,20 +153,9 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
                                                  }
                                              })
                                              .build();
-                int res = audioManager.requestAudioFocus(this.audioFocusRequest);
+                int res = audioManager.requestAudioFocus(this.audioFocusRequest, AudioManager.STREAM_MUSIC,);
             } else {
-
-                audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-                if (audioManager.isBluetoothScoOn() || audioManager.isBluetoothA2dpOn()) {
-                    audioManager.setSpeakerphoneOn(false);
-                } else {
-                    audioManager.setSpeakerphoneOn(true);
-                }
-
-
-
-                audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC,
-                                               AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
+                audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);
             }
 
             this.playing = true;
@@ -313,7 +290,8 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
             );
         } else {
             // This method is deprecated but must be used on older devices
-            player.setAudioStreamType(respectSilence ? AudioManager.STREAM_RING : AudioManager.STREAM_MUSIC);
+            // player.setAudioStreamType(respectSilence ? AudioManager.STREAM_MUSIC : AudioManager.STREAM_MUSIC);
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }
 
