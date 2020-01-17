@@ -139,7 +139,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
         if (!this.playing) {
 
             // CHECK VERSIONS
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
                                                           .setUsage(AudioAttributes.USAGE_MEDIA)
                                                           .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -173,13 +173,13 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @Override
     void stop() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
             audioManager.abandonAudioFocusRequest(this.audioFocusRequest);
         } else {
             AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
             audioManager.setMode(this.savedAudioMode);
-            audioManager.abandonAudioFocusRequest(null);
+            audioManager.abandonAudioFocus(null);
         }
         if (this.released) {
             return;
@@ -282,7 +282,7 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
 
     @SuppressWarnings("deprecation")
     private void setAttributes(MediaPlayer player) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             player.setAudioAttributes(new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
