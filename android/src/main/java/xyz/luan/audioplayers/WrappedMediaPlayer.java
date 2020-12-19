@@ -175,7 +175,11 @@ public class WrappedMediaPlayer extends Player implements MediaPlayer.OnPrepared
     void stop() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.abandonAudioFocusRequest(this.audioFocusRequest);
+            try {
+                audioManager.abandonAudioFocusRequest(this.audioFocusRequest);
+            } catch(Exception e) {
+                
+            }
         } else {
             AudioManager audioManager = (AudioManager)this.ref.getActivity().getSystemService(Context.AUDIO_SERVICE);
             audioManager.setMode(this.savedAudioMode);
